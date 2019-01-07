@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <cs50.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(int argc, string argv[])
+{
+    int count = 0;
+
+    if(argc != 2) //Check how many arguments passed to main funtion
+    {
+        printf("Usage: ./vigenere k\n");
+        return 1;
+    }
+    int s = strlen(argv[1]); // get the length of keyword
+    for(int i = 0; i < s; i++) //if argument format is not correct
+    {
+        if(!isalpha(argv[1][i]))
+        {
+            printf("invalid keyword\n");
+            return 1;
+        }
+    }
+
+    string text = get_string("plaintext: ");
+
+    for(int k = 0; k < s; k++) //convert all alphabits in keyword to low captial.
+    {
+        if(isupper(argv[1][k]))
+        {
+            argv[1][k] = argv[1][k] + 32;
+        }
+    }
+    printf("ciphertext: ");
+    for(int i = 0, n = strlen(text); i < n; i++)
+    {
+        count = count % s; //makesure count always < size of keyword.
+        if(isupper(text[i]))
+        {
+            text[i] = ((text[i] - 65 + (argv[1][count] - 97)) % 26) + 65;
+            count ++;
+        }
+        else if(islower(text[i]))
+        {
+            text[i] = ((text[i] - 97 + (argv[1][count] - 97)) % 26) + 97;
+            count ++;
+        }
+        printf("%c", text[i]);
+    }
+    printf("\n");
+}
